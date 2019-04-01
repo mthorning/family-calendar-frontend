@@ -1,40 +1,49 @@
 {
-  "name": "family-calendar-fronten",
-  "private": true,
-  "description": "Backend for the Family Calendar application",
-  "version": "0.1.0",
-  "author": "@thorning_m",
-  "dependencies": {
-    "gatsby": "^2.3.3",
-    "gatsby-image": "^2.0.35",
-    "gatsby-plugin-manifest": "^2.0.25",
-    "gatsby-plugin-offline": "^2.0.25",
-    "gatsby-plugin-react-helmet": "^3.0.11",
-    "gatsby-plugin-sharp": "^2.0.32",
-    "gatsby-source-filesystem": "^2.0.28",
-    "gatsby-transformer-sharp": "^2.1.17",
-    "prop-types": "^15.7.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-helmet": "^5.2.0"
-  },
-  "devDependencies": {
-    "prettier": "^1.16.4"
-  },
-  "keywords": [
-    "gatsby"
-  ],
-  "license": "ISC",
-  "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write src/**/*.{js,jsx}",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mthorning/family-calendar-frontend"
-  }
+    "name": "family-calendar-fronten",
+    "private": true,
+    "description": "Backend for the Family Calendar application",
+    "version": "0.1.0",
+    "author": "@thorning_m",
+    "dependencies": {
+        "@emotion/core": "^10.0.10",
+        "apollo-boost": "^0.3.1",
+        "emotion-theming": "^10.0.10",
+        "gatsby": "^2.3.3",
+        "gatsby-image": "^2.0.35",
+        "gatsby-plugin-emotion": "^4.0.6",
+        "gatsby-plugin-manifest": "^2.0.25",
+        "gatsby-plugin-offline": "^2.0.25",
+        "gatsby-plugin-react-helmet": "^3.0.11",
+        "gatsby-plugin-sharp": "^2.0.32",
+        "gatsby-source-filesystem": "^2.0.28",
+        "gatsby-transformer-sharp": "^2.1.17",
+        "moment": "^2.24.0",
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6",
+        "react-apollo": "^2.5.3",
+        "react-available-times": "^1.2.2",
+        "react-big-calendar": "^0.20.4",
+        "react-dom": "^16.8.6",
+        "react-helmet": "^5.2.0"
+    },
+    "devDependencies": {
+        "http-proxy-middleware": "^0.19.1",
+        "prettier": "^1.16.4"
+    },
+    "keywords": [
+        "gatsby"
+    ],
+    "license": "ISC",
+    "scripts": {
+        "build": "gatsby build",
+        "develop": "gatsby develop",
+        "format": "prettier --write src/**/*.{js,jsx}",
+        "start": "npm run develop",
+        "serve": "gatsby serve",
+        "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mthorning/family-calendar-frontend"
+    }
 }

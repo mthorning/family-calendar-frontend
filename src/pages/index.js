@@ -1,21 +1,52 @@
-import React from "react"
-import { Link } from "gatsby"
+import React from 'react'
+import Layout from '../components/Layout'
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+export default function IndexPage() {
+    const localizer = BigCalendar.momentLocalizer(moment)
+    return (
+        <Layout>
+            <Query query={eventsQuery}>
+                {({ data, loading, error }) => {
+                    if (loading) return <p>Loading...</p>
+                    if (error) return <p>Error: ${error.message}</p>
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+                    console.log(data)
+                    return (
+                        <BigCalendar
+                            localizer={localizer}
+                            events={data.events}
+                            startAccessor="start"
+                            endAccessor="end"
+                        />
+                    )
+                }}
+            </Query>
+        </Layout>
+    )
+}
 
-export default IndexPage
+const eventsQuery = gql`
+    {
+        events: listEvents {
+            id
+            full_day
+            date
+            month
+            year
+            day
+            name
+            start_time {
+                hours
+                minutes
+            }
+            end_time {
+                hours
+                minutes
+            }
+        }
+    }
+`
