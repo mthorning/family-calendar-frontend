@@ -1,4 +1,4 @@
-const developMiddleware = require('./dev-proxy')
+const proxy = require('http-proxy-middleware')
 
 module.exports = {
     siteMetadata: {
@@ -6,7 +6,14 @@ module.exports = {
         description: `A calendar for planning family activities with.`,
         author: `@thorning_m`,
     },
-    developMiddleware,
+    developMiddleware: app => {
+        app.use(
+            '/graphql',
+            proxy({
+                target: 'http://localhost:9001',
+            })
+        )
+    },
     plugins: [
         `gatsby-plugin-react-helmet`,
         `gatsby-transformer-sharp`,

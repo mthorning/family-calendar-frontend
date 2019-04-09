@@ -1,30 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../components/Layout'
-import BigCalendar from 'react-big-calendar'
-import moment from 'moment'
+import Calendar from '../components/Calendar'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import Modal from '../components/Modal'
+import AddEventForm from '../components/AddEventForm'
 
 export default function IndexPage() {
-    const localizer = BigCalendar.momentLocalizer(moment)
+    const [events, setEvents] = useState([])
+    const [selectedDate, setSelectedDate] = useState(null)
     return (
         <Layout>
             <Query query={eventsQuery}>
                 {({ data, loading, error }) => {
                     if (loading) return <p>Loading...</p>
                     if (error) return <p>Error: ${error.message}</p>
-
-                    console.log(data)
-                    return (
-                        <BigCalendar
-                            localizer={localizer}
-                            events={data.events}
-                            startAccessor="start"
-                            endAccessor="end"
-                        />
-                    )
+                    setEvents(data.events)
+                    return null
                 }}
             </Query>
+            {selectedDate && (
+                <Modal date={selectedDate}>
+                    <AddEventForm />
+                </Modal>
+            )}
+            <Calendar setSelectedDate={setSelectedDate} events={events} />
         </Layout>
     )
 }
@@ -32,21 +32,10 @@ export default function IndexPage() {
 const eventsQuery = gql`
     {
         events: listEvents {
-            id
-            full_day
-            date
-            month
-            year
-            day
-            name
-            start_time {
-                hours
-                minutes
-            }
-            end_time {
-                hours
-                minutes
-            }
+            title
+            start
+            end
+            allDay
         }
     }
 `

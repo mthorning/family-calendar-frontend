@@ -3,7 +3,8 @@ import { ApolloProvider } from 'react-apollo'
 import { client } from './src/apollo/client'
 import { ThemeProvider } from 'emotion-theming'
 import { Global } from '@emotion/core'
-import { global, theme } from './src/styles'
+import global from './src/styles/global'
+import theme from './src/styles/theme'
 
 export const wrapRootElement = ({ element }) => {
     return (
