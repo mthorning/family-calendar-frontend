@@ -20,13 +20,13 @@ module.exports = {
         `gatsby-plugin-sharp`,
         `gatsby-plugin-offline`,
         `gatsby-plugin-emotion`,
-        {
-            resolve: `gatsby-source-filesystem`,
-            options: {
-                name: `images`,
-                path: `${__dirname}/src/images`,
-            },
-        },
+        // {
+        //     resolve: `gatsby-source-filesystem`,
+        //     options: {
+        //         name: `images`,
+        //         path: `${__dirname}/src/images`,
+        //     },
+        // },
         {
             resolve: `gatsby-plugin-manifest`,
             options: {

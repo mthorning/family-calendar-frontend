@@ -1,13 +1,11 @@
 import React from 'react'
-import { overlay, modal } from './style'
+import { Modal } from '@material-ui/core'
+import { whiteBox, modalStyle } from './style'
 
-export default function({ children, date }) {
+export default function({ children, closeWith, open }) {
     return (
-        <div css={overlay}>
-            <div css={modal}>
-                <h1>{date}</h1>
-                {children}
-            </div>
-        </div>
+        <Modal onBackdropClick={closeWith} css={modalStyle} open={open}>
+            <div css={whiteBox}>{children}</div>
+        </Modal>
     )
 }

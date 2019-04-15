@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import Layout from '../components/Layout'
 import Calendar from '../components/Calendar'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Modal from '../components/Modal'
 import AddEventForm from '../components/AddEventForm'
+import moment from 'moment'
 
 export default function IndexPage() {
     const [events, setEvents] = useState([])
     const [selectedDate, setSelectedDate] = useState(null)
+    const dateStr = useMemo(() => moment(selectedDate).format('DD/MM/YYYY'), [
+        selectedDate,
+    ])
     return (
         <Layout>
             <Query query={eventsQuery}>
@@ -19,11 +23,13 @@ export default function IndexPage() {
                     return null
                 }}
             </Query>
-            {selectedDate && (
-                <Modal date={selectedDate}>
-                    <AddEventForm />
-                </Modal>
-            )}
+            <Modal
+                closeWith={() => setSelectedDate(null)}
+                open={!!selectedDate}
+            >
+                <h1>{dateStr}</h1>
+                <AddEventForm />
+            </Modal>
             <Calendar setSelectedDate={setSelectedDate} events={events} />
         </Layout>
     )

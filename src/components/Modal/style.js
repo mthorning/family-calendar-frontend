@@ -1,20 +1,12 @@
 import { css } from '@emotion/core'
 
-export const overlay = css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 5;
-    width: 100vw;
-    height: 100vw;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.7);
+export const modalStyle = css`
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 `
-export const modal = css`
-    display: inline-block;
-    padding: 30px;
+export const whiteBox = css`
+    padding: 15px;
     background: #fff;
+    display: inline-block;
 `

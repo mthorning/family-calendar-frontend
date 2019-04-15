@@ -5,6 +5,7 @@ import { ThemeProvider } from 'emotion-theming'
 import { Global } from '@emotion/core'
 import global from './src/styles/global'
 import theme from './src/styles/theme'
+import 'typeface-roboto';
 
 export const wrapRootElement = ({ element }) => {
     return (
