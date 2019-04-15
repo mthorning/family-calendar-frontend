@@ -8,20 +8,13 @@ export const form = css`
     align-items: center;
 
     & > * {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
         width: 100%;
     }
 `
-export const time = css`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    & > [type='time'] {
-        flex: auto;
-    }
-
-    label {
-        width: 80px;
-    }
+export const textFieldStyle = css`
+    margin-bottom: 10px;
+`
+export const saveStyle = css`
+    margin-right: 8px;
 `
