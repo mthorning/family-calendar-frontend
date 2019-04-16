@@ -1,15 +1,15 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { TextField, Button } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
 import { form, textFieldStyle, saveStyle } from './style'
 
 const defaultFormValues = {
-    name: '',
+    title: '',
     start: '08:00',
     end: '16:30',
 }
 
-export default function() {
+export default function({ getMoment, addEvent, closeModal }) {
     const [formValues, setFormValues] = useState(defaultFormValues)
 
     const updateFormField = field => e => {
@@ -21,16 +21,32 @@ export default function() {
     }
 
     function submitForm() {
-        console.log(formValues)
+        const start = getMoment().format(`YYYY-MM-DDT${formValues.start}:00`)
+        const end = getMoment().format(`YYYY-MM-DDT${formValues.end}:00`)
+        addEvent({
+            variables: {
+                title: formValues.title,
+                start,
+                end,
+            },
+        }).then(closeModal)
+    }
+
+    function onKeyDown(e) {
+        if (e.which === 13) {
+            e.stopPropagation()
+            e.preventDefault()
+            submitForm()
+        }
     }
 
     return (
-        <form css={form}>
+        <form onKeyDown={onKeyDown} onSubmit={submitForm} css={form}>
             <TextField
                 autoFocus
                 id="name-field"
-                value={formValues.name}
-                onChange={updateFormField('name')}
+                value={formValues.title}
+                onChange={updateFormField('title')}
                 css={textFieldStyle}
                 label="Event Name"
                 placeholder="Enter a name"
@@ -63,7 +79,8 @@ export default function() {
                 field="end"
             />
             <Button
-                onClick={submitForm}
+                disabled={!formValues.title}
+                type="submit"
                 variant="contained"
                 size="large"
                 color="primary"

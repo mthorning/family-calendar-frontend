@@ -5,6 +5,11 @@ import BigCalendar from 'react-big-calendar'
 const localizer = BigCalendar.momentLocalizer(moment)
 
 export default function Calendar({ setSelectedDate, events }) {
+    const eventsWithDates = events.map(event => ({
+        ...event,
+        start: new Date(Number(event.start)),
+        end: new Date(Number(event.end)),
+    }))
     function onSelectSlot(selection) {
         setSelectedDate(selection.start)
     }
@@ -12,7 +17,7 @@ export default function Calendar({ setSelectedDate, events }) {
         <BigCalendar
             selectable
             localizer={localizer}
-            events={events}
+            events={eventsWithDates}
             onSelectSlot={onSelectSlot}
         />
     )
