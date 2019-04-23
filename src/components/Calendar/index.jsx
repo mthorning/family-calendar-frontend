@@ -19,6 +19,7 @@ export default function Calendar({ setSelectedDate, events }) {
             localizer={localizer}
             events={eventsWithDates}
             onSelectSlot={onSelectSlot}
+            views={{ month: true, week: true }}
         />
     )
 }
