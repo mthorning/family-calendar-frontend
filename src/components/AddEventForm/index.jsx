@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { TextField, Button } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
+import { DateContext } from 'contexts'
 import { form, textFieldStyle, saveStyle } from './style'
 
 const defaultFormValues = {
@@ -9,8 +10,9 @@ const defaultFormValues = {
     end: '16:30',
 }
 
-export default function({ getMoment, addEvent, closeModal }) {
+export default function({ addEvent, closeModal }) {
     const [formValues, setFormValues] = useState(defaultFormValues)
+    const { getMoment } = useContext(DateContext)
 
     const updateFormField = field => e => {
         const { value } = e.target

@@ -27,6 +27,7 @@ module.exports = {
                     components: 'src/components',
                     gql: 'src/gql',
                     hooks: 'src/hooks',
+                    contexts: 'src/contexts',
                 },
                 extensions: ['js'],
             },

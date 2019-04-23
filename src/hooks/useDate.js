@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import moment from 'moment'
 
-export default function(initial) {
-    const [date, set] = useState(initial)
+export default function() {
+    const [date, set] = useState(null)
     return {
         setDate(newDate) {
             if (!newDate) {

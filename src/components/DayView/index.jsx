@@ -1,15 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useContext } from 'react'
 import { Mutation } from 'react-apollo'
 import { GET_EVENTS, CREATE_EVENT } from 'gql'
 import Modal from 'components/Modal'
 import AddEventForm from 'components/AddEventForm'
+import { DateContext } from 'contexts'
 
-const propTypes = {
-    dateHelpers: PropTypes.object.isRequired,
-}
-
-function DayView({ dateHelpers: { isDate, getDateStr, getMoment, setDate } }) {
+function DayView() {
+    const { isDate, getDateStr, setDate } = useContext(DateContext)
     function closeModal() {
         setDate(null)
     }
@@ -36,7 +33,6 @@ function DayView({ dateHelpers: { isDate, getDateStr, getMoment, setDate } }) {
                     <AddEventForm
                         {...{
                             addEvent,
-                            getMoment,
                             closeModal,
                         }}
                     />
@@ -46,5 +42,4 @@ function DayView({ dateHelpers: { isDate, getDateStr, getMoment, setDate } }) {
     )
 }
 
-DayView.propTypes = propTypes
 export default DayView
