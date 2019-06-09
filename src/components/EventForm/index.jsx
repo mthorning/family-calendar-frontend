@@ -1,18 +1,27 @@
 import React, { useState, useContext } from 'react'
+import PropTypes from 'prop-types'
 import { TextField, Button } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
 import { DateContext } from 'contexts'
 import { form, textFieldStyle, saveStyle } from './style'
 
-const defaultFormValues = {
+const propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    submitHandler: PropTypes.func.isRequired,
+    title: PropTypes.string,
+    start: PropTypes.string,
+    end: PropTypes.string,
+}
+
+const defaultProps = {
     title: '',
     start: '08:00',
     end: '16:30',
 }
 
-export default function({ addEvent, closeModal }) {
-    const [formValues, setFormValues] = useState(defaultFormValues)
-    const { getMoment } = useContext(DateContext)
+function EventForm(props) {
+    const { submitHandler, closeModal, ...formProps } = props
+    const [formValues, setFormValues] = useState(formProps)
 
     const updateFormField = field => e => {
         const { value } = e.target
@@ -22,28 +31,20 @@ export default function({ addEvent, closeModal }) {
         })
     }
 
-    function submitForm() {
-        const start = getMoment().format(`YYYY-MM-DDT${formValues.start}:00`)
-        const end = getMoment().format(`YYYY-MM-DDT${formValues.end}:00`)
-        addEvent({
-            variables: {
-                title: formValues.title,
-                start,
-                end,
-            },
-        }).then(closeModal)
-    }
-
     function onKeyDown(e) {
         if (e.which === 13) {
             e.stopPropagation()
             e.preventDefault()
-            submitForm()
+            onSubmit()
         }
     }
 
+    function onSubmit() {
+        submitHandler(formValues)
+    }
+
     return (
-        <form onKeyDown={onKeyDown} onSubmit={submitForm} css={form}>
+        <form onKeyDown={onKeyDown} onSubmit={onSubmit} css={form}>
             <TextField
                 autoFocus
                 id="name-field"
@@ -93,3 +94,7 @@ export default function({ addEvent, closeModal }) {
         </form>
     )
 }
+
+EventForm.propTypes = propTypes
+EventForm.defaultProps = defaultProps
+export default EventForm

@@ -1,31 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Query } from 'react-apollo'
 import { GET_EVENTS } from 'gql'
 import Layout from 'components/Layout'
 import Calendar from 'components/Calendar'
 import DayView from 'components/DayView'
+import EventView from 'components/EventView'
 import useDate from 'hooks/useDate'
-import { DateContext } from 'contexts'
+import { DateContext, EventContext } from 'contexts'
 
 export default function IndexPage() {
+    const [selectedEvent, setSelectedEvent] = useState(null)
     const dateHelpers = useDate()
     return (
         <Layout>
             <DateContext.Provider value={dateHelpers}>
-                <Query query={GET_EVENTS}>
-                    {({ data, loading, error }) => {
-                        if (loading) return <p>Loading...</p>
-                        if (error) return <p>Error: ${error.message}</p>
+                <EventContext.Provider
+                    value={[selectedEvent, setSelectedEvent]}
+                >
+                    <Query query={GET_EVENTS}>
+                        {({ data, loading, error }) => {
+                            if (loading) return <p>Loading...</p>
+                            if (error) return <p>Error: ${error.message}</p>
 
-                        return (
-                            <Calendar
-                                setSelectedDate={dateHelpers.setDate}
-                                events={data.events}
-                            />
-                        )
-                    }}
-                </Query>
-                <DayView />
+                            return (
+                                <Calendar
+                                    setSelectedDate={dateHelpers.setDate}
+                                    setSelectedEvent={setSelectedEvent}
+                                    events={data.events}
+                                />
+                            )
+                        }}
+                    </Query>
+                    <DayView />
+                    <EventView />
+                </EventContext.Provider>
             </DateContext.Provider>
         </Layout>
     )

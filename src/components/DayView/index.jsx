@@ -2,21 +2,37 @@ import React, { useContext } from 'react'
 import { Mutation } from 'react-apollo'
 import { GET_EVENTS, CREATE_EVENT } from 'gql'
 import Modal from 'components/Modal'
-import AddEventForm from 'components/AddEventForm'
+import EventForm from 'components/EventForm'
 import { DateContext } from 'contexts'
 
 function DayView() {
-    const { isDate, getDateStr, setDate } = useContext(DateContext)
-    function closeModal() {
-        setDate(null)
+    const { isDate, getDateStr, setDate, getMoment } = useContext(DateContext)
+
+    function EventFormWithSubmit(addEvent) {
+        function submitHandler(formValues) {
+            const start = getMoment().format(
+                `YYYY-MM-DDT${formValues.start}:00`
+            )
+            const end = getMoment().format(`YYYY-MM-DDT${formValues.end}:00`)
+            addEvent({
+                variables: {
+                    title: formValues.title,
+                    start,
+                    end,
+                },
+            }).then(() => setDate(null))
+        }
+        return (
+            <EventForm
+                {...{
+                    submitHandler,
+                }}
+            />
+        )
     }
 
     return (
-        <Modal
-            closeWith={closeModal}
-            open={isDate}
-            title={getDateStr('DD/MM/YYYY')}
-        >
+        <Modal open={isDate} title={getDateStr('DD/MM/YYYY')}>
             <Mutation
                 mutation={CREATE_EVENT}
                 update={(cache, { data: { createEvent } }) => {
@@ -29,14 +45,7 @@ function DayView() {
                     })
                 }}
             >
-                {addEvent => (
-                    <AddEventForm
-                        {...{
-                            addEvent,
-                            closeModal,
-                        }}
-                    />
-                )}
+                {EventFormWithSubmit}
             </Mutation>
         </Modal>
     )
