@@ -1,14 +1,22 @@
 import React from 'react'
-import { Modal, DialogTitle } from '@material-ui/core'
+import PropTypes from 'prop-types'
+import { Modal as MaterialModal, DialogTitle } from '@material-ui/core'
 import { whiteBox, modalStyle } from './style'
 
-export default function({ children, closeWith, open, title }) {
+const propTypes = {
+    closeWith: PropTypes.func.isRequired,
+}
+
+function Modal({ children, closeWith, open, title }) {
     return (
-        <Modal onBackdropClick={closeWith} css={modalStyle} open={open}>
+        <MaterialModal onBackdropClick={closeWith} css={modalStyle} open={open}>
             <div css={whiteBox}>
                 <DialogTitle>{title}</DialogTitle>
                 {children}
             </div>
-        </Modal>
+        </MaterialModal>
     )
 }
+
+Modal.propTypes = propTypes
+export default Modal

@@ -1,13 +1,17 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import Modal from 'components/Modal'
 import { Mutation } from 'react-apollo'
-import { GET_EVENTS, UPDATE_EVENT } from 'gql'
+import { GET_EVENTS, UPDATE_EVENT, DELETE_EVENT } from 'gql'
 import { EventContext } from 'contexts'
 import EventForm from 'components/EventForm'
 import moment from 'moment'
+import DeleteIcon from '@material-ui/icons/Delete'
+import { css } from '@emotion/core'
+import { Button, IconButton } from '@material-ui/core'
 
 export default function EventView() {
     const [selectedEvent, setSelectedEvent] = useContext(EventContext)
+    const [deleting, setDeleting] = useState(false)
     const title = selectedEvent && selectedEvent.title
     const formProps = useMemo(() => {
         if (!selectedEvent) return {}
@@ -18,6 +22,35 @@ export default function EventView() {
             end: moment(selectedEvent.end).format('HH:mm'),
         }
     }, [selectedEvent])
+
+    function closeModal() {
+        setSelectedEvent(null)
+    }
+
+    function DeleteButton() {
+        const deleteStyle = css`
+            &:hover {
+                color: red;
+            }
+        `
+        if (deleting) {
+            return (
+                <>
+                    Are you sure?
+                    <Button color="secondary">Yes</Button>
+                    <Button color="primary" onClick={() => setDeleting(false)}>
+                        No
+                    </Button>
+                <>
+            )
+        }
+
+        return (
+            <IconButton onClick={() => setDeleting(true)} css={deleteStyle}>
+                <DeleteIcon />
+            </IconButton>
+        )
+    }
 
     function EventFormWithSubmit(updateEvent) {
         function submitHandler(formValues) {
@@ -35,7 +68,7 @@ export default function EventView() {
                     start,
                     end,
                 },
-            }).then(() => setSelectedEvent(null))
+            }).then(closeModal)
         }
         return (
             <EventForm
@@ -48,8 +81,11 @@ export default function EventView() {
     }
 
     return (
-        <Modal open={!!selectedEvent} title={title}>
+        <Modal closeWith={closeModal} open={!!selectedEvent} title={title}>
             <Mutation mutation={UPDATE_EVENT}>{EventFormWithSubmit}</Mutation>
+	    <div css={{ height: '40px' }} >
+            <DeleteButton />
+	</div>
         </Modal>
     )
 }

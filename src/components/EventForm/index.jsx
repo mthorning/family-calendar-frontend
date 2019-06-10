@@ -2,11 +2,10 @@ import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { TextField, Button } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
-import { DateContext } from 'contexts'
+import { Date, Context } from 'contexts'
 import { form, textFieldStyle, saveStyle } from './style'
 
 const propTypes = {
-    closeModal: PropTypes.func.isRequired,
     submitHandler: PropTypes.func.isRequired,
     title: PropTypes.string,
     start: PropTypes.string,
@@ -20,7 +19,7 @@ const defaultProps = {
 }
 
 function EventForm(props) {
-    const { submitHandler, closeModal, ...formProps } = props
+    const { submitHandler, ...formProps } = props
     const [formValues, setFormValues] = useState(formProps)
 
     const updateFormField = field => e => {

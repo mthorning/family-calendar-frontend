@@ -8,6 +8,10 @@ import { DateContext } from 'contexts'
 function DayView() {
     const { isDate, getDateStr, setDate, getMoment } = useContext(DateContext)
 
+    function closeModal() {
+        setDate(null)
+    }
+
     function EventFormWithSubmit(addEvent) {
         function submitHandler(formValues) {
             const start = getMoment().format(
@@ -20,7 +24,7 @@ function DayView() {
                     start,
                     end,
                 },
-            }).then(() => setDate(null))
+            }).then(closeModal)
         }
         return (
             <EventForm
@@ -32,7 +36,11 @@ function DayView() {
     }
 
     return (
-        <Modal open={isDate} title={getDateStr('DD/MM/YYYY')}>
+        <Modal
+            closeWith={closeModal}
+            open={isDate}
+            title={getDateStr('DD/MM/YYYY')}
+        >
             <Mutation
                 mutation={CREATE_EVENT}
                 update={(cache, { data: { createEvent } }) => {
