@@ -32,13 +32,13 @@ function EventForm(props) {
 
     function onKeyDown(e) {
         if (e.which === 13) {
-            e.stopPropagation()
-            e.preventDefault()
-            onSubmit()
+            onSubmit(e)
         }
     }
 
-    function onSubmit() {
+    function onSubmit(e) {
+        e.stopPropagation()
+        e.preventDefault()
         submitHandler(formValues)
     }
 

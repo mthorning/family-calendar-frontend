@@ -13,6 +13,7 @@ export default function EventView() {
     const [selectedEvent, setSelectedEvent] = useContext(EventContext)
     const [deleting, setDeleting] = useState(false)
     const title = selectedEvent && selectedEvent.title
+
     const formProps = useMemo(() => {
         if (!selectedEvent) return {}
         return {
@@ -41,7 +42,7 @@ export default function EventView() {
                     <Button color="primary" onClick={() => setDeleting(false)}>
                         No
                     </Button>
-                <>
+                </>
             )
         }
 
@@ -83,9 +84,9 @@ export default function EventView() {
     return (
         <Modal closeWith={closeModal} open={!!selectedEvent} title={title}>
             <Mutation mutation={UPDATE_EVENT}>{EventFormWithSubmit}</Mutation>
-	    <div css={{ height: '40px' }} >
-            <DeleteButton />
-	</div>
+            <div css={{ height: '40px' }}>
+                <DeleteButton />
+            </div>
         </Modal>
     )
 }
