@@ -9,8 +9,8 @@ const listStyle = css`
 `
 function stringToDate(holiday) {
     return {
-        start: moment(holiday.start).format('YYYY-MM-DDT00:00:00'),
-        end: moment(holiday.end).format('YYYY-MM-DDT00:00:00'),
+        start: moment(holiday.start),
+        end: moment(holiday.end),
     }
 }
 
@@ -22,7 +22,7 @@ function dateToString(holiday) {
 }
 
 function ListItem(holiday) {
-    return <li>{`${holiday.start} - ${holiday.end}`}</li>
+    return <li key={`${Date.now()}`}>{`${holiday.start} - ${holiday.end}`}</li>
 }
 
 function List({ holidays }) {
@@ -30,7 +30,7 @@ function List({ holidays }) {
 }
 
 function HolidayDrawer(props) {
-    const { holidays, setHolidays } = props
+    const { holidays } = props
     const [open, setOpen] = useState(false)
 
     function addHoliday(holiday) {

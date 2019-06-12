@@ -59,3 +59,13 @@ export const DELETE_EVENT = gql`
         }
     }
 `
+
+export const GET_HOLIDAYS = gql`
+    {
+        events: listHolidays {
+            id
+            start
+            end
+        }
+    }
+`
