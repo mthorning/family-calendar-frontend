@@ -62,10 +62,28 @@ export const DELETE_EVENT = gql`
 
 export const GET_HOLIDAYS = gql`
     {
-        events: listHolidays {
+        holidays: listHolidays {
             id
             start
             end
+        }
+    }
+`
+
+export const CREATE_HOLIDAY = gql`
+    mutation CreateHoliday($start: String!, $end: String!) {
+        createHoliday(start: $start, end: $end) {
+            id
+            start
+            end
+        }
+    }
+`
+
+export const DELETE_HOLIDAY = gql`
+    mutation DeleteHoliday($id: String!) {
+        deleteHoliday(id: $id) {
+            id
         }
     }
 `

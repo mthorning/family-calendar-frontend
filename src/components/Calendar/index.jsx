@@ -18,13 +18,14 @@ export default function Calendar({
     }))
 
     const highlightHolidays = date => {
-        if (isHoliday(date)) {
-            return {
-                style: {
-                    backgroundColor: '#ff180085',
-                },
-            }
-        } else return {}
+        // if (isHoliday(date)) {
+        //     return {
+        //         style: {
+        //             backgroundColor: '#ff180085',
+        //         },
+        //     }
+        // } else return {}
+        return {}
     }
 
     function onSelectSlot(selection) {
@@ -36,7 +37,6 @@ export default function Calendar({
     return (
         <BigCalendar
             selectable
-            key={holidays.join('')}
             localizer={localizer}
             events={eventsWithDates}
             dayPropGetter={highlightHolidays}

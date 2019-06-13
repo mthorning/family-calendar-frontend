@@ -12,65 +12,54 @@ import moment from 'moment'
 
 export default function IndexPage() {
     const [selectedEvent, setSelectedEvent] = useState(null)
-    const [holidays, setHolidays] = useState([])
 
-    function isHoliday(date) {
-        const testDate = moment(date)
-        holidays.forEach(holiday => {
-            if (
-                holiday.start.isBefore(testDate) &&
-                holiday.end.isAfter(testDate)
-            ) {
-                return true
-            }
-        })
-        return false
-    }
+    // function isHoliday(date) {
+    //     const testDate = moment(date)
+    //     holidays.forEach(holiday => {
+    //         if (
+    //             holiday.start.isBefore(testDate) &&
+    //             holiday.end.isAfter(testDate)
+    //         ) {
+    //             return true
+    //         }
+    //     })
+    //     return false
+    // }
 
     const dateHelpers = useDate()
+
+    function PopulatedCalendar() {
+        return (
+            <Query query={GET_EVENTS}>
+                {({ data, loading, err }) => {
+                    if (loading) return <p>Loading...</p>
+                    if (err) return <p>Error: ${err.message}</p>
+
+                    return (
+                        <Calendar
+                            setSelectedDate={dateHelpers.setDate}
+                            setSelectedEvent={setSelectedEvent}
+                            events={data.events}
+                        />
+                    )
+                }}
+            </Query>
+        )
+    }
+
     return (
         <Query query={GET_HOLIDAYS}>
-            {({ holData, holLoading, holErr }) => {
+            {({ data, loading, err }) => {
+                if (err) return <p>Error: ${err.message}</p>
                 return (
                     <>
-                        <HolidayDrawer holidays={holData.holidays} />
+                        {!loading && <HolidayDrawer holidays={data.holidays} />}
                         <Layout>
                             <DateContext.Provider value={dateHelpers}>
                                 <EventContext.Provider
                                     value={[selectedEvent, setSelectedEvent]}
                                 >
-                                    <Query query={GET_EVENTS}>
-                                        {({
-                                            eventData,
-                                            eventLoading,
-                                            eventErr,
-                                        }) => {
-                                            if (holLoading || eventLoading)
-                                                return <p>Loading...</p>
-                                            if (holErr || eventErr) {
-                                                let error = holErr || eventErr
-                                                return (
-                                                    <p>
-                                                        Error: ${error.message}
-                                                    </p>
-                                                )
-                                            }
-
-                                            return (
-                                                <Calendar
-                                                    holidays={holidays}
-                                                    isHoliday={isHoliday}
-                                                    setSelectedDate={
-                                                        dateHelpers.setDate
-                                                    }
-                                                    setSelectedEvent={
-                                                        setSelectedEvent
-                                                    }
-                                                    events={eventData.events}
-                                                />
-                                            )
-                                        }}
-                                    </Query>
+                                    <PopulatedCalendar />
                                     <DayView />
                                     <EventView />
                                 </EventContext.Provider>

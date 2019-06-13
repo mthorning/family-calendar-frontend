@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { TextField, Button } from '@material-ui/core'
 import { css } from '@emotion/core'
+import moment from 'moment'
 
 const formStyle = css`
     margin-top: 20px;
@@ -34,7 +35,14 @@ function Form({ submitHandler }) {
     function onSubmit(e) {
         e.stopPropagation()
         e.preventDefault()
-        submitHandler(formValues)
+        const start = moment(formValues.start).format(`YYYY-MM-DDT00:00:00`)
+        const end = moment(formValues.start).format(`YYYY-MM-DDT00:00:00`)
+        submitHandler({
+            variables: {
+                start,
+                end,
+            },
+        })
     }
 
     return (
