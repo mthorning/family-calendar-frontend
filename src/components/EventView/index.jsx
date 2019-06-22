@@ -25,10 +25,11 @@ export default function EventView() {
     }, [selectedEvent])
 
     function closeModal() {
+        setDeleting(false)
         setSelectedEvent(null)
     }
 
-    function DeleteButton() {
+    function deleteButton(deleteEvent) {
         const deleteStyle = css`
             &:hover {
                 color: red;
@@ -38,7 +39,15 @@ export default function EventView() {
             return (
                 <>
                     Are you sure?
-                    <Button color="secondary">Yes</Button>
+                    <Button
+                        color="secondary"
+                        onClick={() => {
+                            deleteEvent({ variables: { id: formProps.id } })
+                            closeModal()
+                        }}
+                    >
+                        Yes
+                    </Button>
                     <Button color="primary" onClick={() => setDeleting(false)}>
                         No
                     </Button>
@@ -53,7 +62,7 @@ export default function EventView() {
         )
     }
 
-    function EventFormWithSubmit(updateEvent) {
+    function eventFormWithSubmit(updateEvent) {
         function submitHandler(formValues) {
             const { id, start: savedStart, end: savedEnd } = selectedEvent
             const start = moment(savedStart).format(
@@ -83,9 +92,30 @@ export default function EventView() {
 
     return (
         <Modal closeWith={closeModal} open={!!selectedEvent} title={title}>
-            <Mutation mutation={UPDATE_EVENT}>{EventFormWithSubmit}</Mutation>
+            <Mutation mutation={UPDATE_EVENT}>{eventFormWithSubmit}</Mutation>
             <div css={{ height: '40px' }}>
-                <DeleteButton />
+                <Mutation
+                    mutation={DELETE_EVENT}
+                    update={(cache, { data: { deleteEvent } }) => {
+                        const { events } = cache.readQuery({
+                            query: GET_EVENTS,
+                        })
+                        const deleted = events.findIndex(
+                            event => event.id === deleteEvent.id
+                        )
+                        cache.writeQuery({
+                            query: GET_EVENTS,
+                            data: {
+                                events: [
+                                    ...events.slice(0, deleted),
+                                    ...events.slice(deleted + 1),
+                                ],
+                            },
+                        })
+                    }}
+                >
+                    {deleteButton}
+                </Mutation>
             </div>
         </Modal>
     )

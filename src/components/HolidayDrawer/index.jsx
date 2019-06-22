@@ -18,8 +18,9 @@ function stringToDate(holiday) {
 function dateToString(holiday) {
     return {
         ...holiday,
-        start: moment.unix(Number(holiday.start)).format('DD/MM/YYYY'),
-        end: moment.unix(Number(holiday.end)).format('DD/MM/YYYY'),
+        //apparently Mongo uses ms but moment uses seconds:
+        start: moment.unix(holiday.start / 1000).format('DD/MM/YYYY'),
+        end: moment.unix(holiday.end / 1000).format('DD/MM/YYYY'),
     }
 }
 
@@ -52,7 +53,26 @@ function HolidayDrawer(props) {
                         )}
                     </Mutation>
                     <Divider />
-                    <Mutation mutation={DELETE_HOLIDAY}>
+                    <Mutation
+                        mutation={DELETE_HOLIDAY}
+                        update={(cache, { data: { deleteHoliday } }) => {
+                            const { holidays } = cache.readQuery({
+                                query: GET_HOLIDAYS,
+                            })
+                            const deleted = holidays.findIndex(
+                                hol => hol.id === deleteHoliday.id
+                            )
+                            cache.writeQuery({
+                                query: GET_HOLIDAYS,
+                                data: {
+                                    holidays: [
+                                        ...holidays.slice(0, deleted),
+                                        ...holidays.slice(deleted + 1),
+                                    ],
+                                },
+                            })
+                        }}
+                    >
                         {deleteHoliday => (
                             <List
                                 {...{
