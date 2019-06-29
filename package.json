@@ -23,6 +23,7 @@
         "react": "^16.8.6",
         "react-addons-css-transition-group": "^15.6.2",
         "react-apollo": "^2.5.3",
+        "react-apollo-hooks": "^0.4.5",
         "react-big-calendar": "^0.20.4",
         "react-dom": "^16.8.6",
         "react-helmet": "^5.2.0",
