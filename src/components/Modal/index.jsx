@@ -6,7 +6,7 @@ import {whiteBox, modalStyle} from './style';
 const propTypes = {
   closeWith: PropTypes.func.isRequired,
   open: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   children: PropTypes.node,
 };
 

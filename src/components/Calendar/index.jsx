@@ -7,31 +7,32 @@ import BigCalendar from 'react-big-calendar';
 const localizer = BigCalendar.momentLocalizer(moment);
 
 const propTypes = {
-  data: PropTypes.object,
+  holidays: PropTypes.array,
+  events: PropTypes.array,
 };
 
 const defaultProps = {
-  data: {events: []},
+  holidays: [],
+  events: [],
 };
 
-function Calendar({data: {events}}) {
+function Calendar({events, holidays}) {
   const {setDate} = useContext(DateContext);
   const {setSelectedEvent} = useContext(EventContext);
 
-  const eventsWithDates = events.map(event => ({
-    ...event,
-    start: new Date(Number(event.start)),
-    end: new Date(Number(event.end)),
-  }));
-
   const highlightHolidays = date => {
-    // if (isHoliday(date)) {
-    //     return {
-    //         style: {
-    //             backgroundColor: '#ff180085',
-    //         },
-    //     }
-    // } else return {}
+    const testDate = moment(date);
+    holidays.forEach(holiday => {
+      if (holiday.start.isBefore(testDate) && holiday.end.isAfter(testDate)) {
+        console.log(date, ' is holiday');
+        return {
+          style: {
+            backgroundColor: '#ff180085',
+          },
+        };
+      }
+    });
+    console.log(date, 'not hol');
     return {};
   };
 
@@ -45,7 +46,7 @@ function Calendar({data: {events}}) {
     <BigCalendar
       selectable
       localizer={localizer}
-      events={eventsWithDates}
+      events={events}
       dayPropGetter={highlightHolidays}
       onSelectSlot={onSelectSlot}
       onSelectEvent={onSelectEvent}

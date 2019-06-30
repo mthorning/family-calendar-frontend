@@ -36,7 +36,7 @@ function ListItem({start, end, id}) {
 
   return (
     <li key={id} onClick={() => deleteHoliday({variables: {id}})}>
-      {`${start} - ${end}`}
+      {`${start.format('DD/MM/YYYY')} - ${end.format('DD/MM/YYYY')}`}
     </li>
   );
 }
