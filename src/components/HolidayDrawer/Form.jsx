@@ -51,7 +51,7 @@ export default function Form() {
     e.stopPropagation();
     e.preventDefault();
     const start = moment(formValues.start).format(`YYYY-MM-DDT00:00:00`);
-    const end = moment(formValues.start).format(`YYYY-MM-DDT00:00:00`);
+    const end = moment(formValues.end).format(`YYYY-MM-DDT00:00:00`);
     createHoliday({
       variables: {
         start,
@@ -67,7 +67,7 @@ export default function Form() {
           css={textFieldStyle}
           id="start-date"
           onChange={updateFormField('start')}
-          label="Start Date"
+          label="Start Date (inc)"
           type="date"
           InputLabelProps={{
             shrink: true,

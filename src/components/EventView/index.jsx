@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useContext} from 'react';
 import Modal from 'components/Modal';
 import {useMutation} from 'react-apollo-hooks';
 import {UPDATE_EVENT} from 'gql';
@@ -11,15 +11,11 @@ export default function EventView() {
   const {selectedEvent, setSelectedEvent} = useContext(EventContext);
   const title = selectedEvent && selectedEvent.title;
 
-  const formProps = useMemo(() => {
-    if (!selectedEvent) return {};
-    return {
-      id: selectedEvent.id,
-      title: selectedEvent.title,
-      start: moment(selectedEvent.start).format('HH:mm'),
-      end: moment(selectedEvent.end).format('HH:mm'),
-    };
-  }, [selectedEvent]);
+  const formProps = {
+    ...selectedEvent,
+    start: selectedEvent?.start.format('HH:mm'),
+    end: selectedEvent?.end.format('HH:mm'),
+  };
 
   function closeModal() {
     setSelectedEvent(null);
@@ -36,6 +32,7 @@ export default function EventView() {
     updateEvent({
       variables: {
         title: formValues.title,
+        notes: formValues.notes,
         id,
         start,
         end,

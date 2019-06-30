@@ -20,21 +20,47 @@ function Calendar({events, holidays}) {
   const {setDate} = useContext(DateContext);
   const {setSelectedEvent} = useContext(EventContext);
 
+  const green = '#1bff0085';
+  const red = '#ff180085';
+
+  const highlightChildCover = event => {
+    if (event.childCover) {
+      return {
+        style: {
+          color: '#000',
+          backgroundColor: '#fff',
+        },
+      };
+    }
+  };
+
   const highlightHolidays = date => {
-    const testDate = moment(date);
+    let isHoliday = false;
+    let backgroundColor;
+    const currentDate = moment(date);
     holidays.forEach(holiday => {
-      if (holiday.start.isBefore(testDate) && holiday.end.isAfter(testDate)) {
-        console.log(date, ' is holiday');
-        return {
-          style: {
-            backgroundColor: '#ff180085',
-          },
-        };
+      if (
+        holiday.start.isSameOrBefore(currentDate) &&
+        holiday.end.isAfter(currentDate)
+      ) {
+        isHoliday = true;
+        backgroundColor = isCovered(currentDate) ? green : red;
       }
     });
-    console.log(date, 'not hol');
-    return {};
+    return isHoliday
+      ? {
+          style: {
+            backgroundColor,
+          },
+        }
+      : {};
   };
+
+  function isCovered(date) {
+    return !!events.filter(
+      event => event.childCover && date.isSame(event.start, 'day'),
+    ).length;
+  }
 
   function onSelectSlot(selection) {
     setDate(selection.start);
@@ -47,6 +73,7 @@ function Calendar({events, holidays}) {
       selectable
       localizer={localizer}
       events={events}
+      eventPropGetter={highlightChildCover}
       dayPropGetter={highlightHolidays}
       onSelectSlot={onSelectSlot}
       onSelectEvent={onSelectEvent}

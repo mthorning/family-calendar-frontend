@@ -9,6 +9,7 @@ const propTypes = {
   title: PropTypes.string,
   start: PropTypes.string,
   end: PropTypes.string,
+  childCover: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -18,7 +19,7 @@ const defaultProps = {
 };
 
 function EventForm(props) {
-  const {submitHandler, ...formProps} = props;
+  const {submitHandler, childCover, ...formProps} = props;
   const [formValues, setFormValues] = useState(formProps);
 
   const updateFormField = field => e => {
@@ -29,56 +30,68 @@ function EventForm(props) {
     });
   };
 
-  function onKeyDown(e) {
-    if (e.which === 13) {
-      onSubmit(e);
-    }
-  }
-
   function onSubmit(e) {
     e.stopPropagation();
     e.preventDefault();
-    submitHandler(formValues);
+    submitHandler({...formValues, childCover});
   }
 
   return (
-    <form onKeyDown={onKeyDown} onSubmit={onSubmit} css={form}>
+    <form onSubmit={onSubmit} css={form}>
       <TextField
         autoFocus
         id="name-field"
         value={formValues.title}
         onChange={updateFormField('title')}
         css={textFieldStyle}
-        label="Event Name"
-        placeholder="Enter a name"
+        label={childCover ? 'Name' : 'Event Name'}
         InputLabelProps={{
           shrink: true,
         }}
       />
-      <TextField
-        id="start-field"
-        value={formValues.start}
-        onChange={updateFormField('start')}
-        css={textFieldStyle}
-        label="Start Time"
-        type="time"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        field="start"
-      />
-      <TextField
-        id="end-field"
-        value={formValues.end}
-        onChange={updateFormField('end')}
-        css={textFieldStyle}
-        label="End Time"
-        type="time"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        field="end"
-      />
+      {!childCover && (
+        <>
+          <TextField
+            id="start-field"
+            value={formValues.start}
+            onChange={updateFormField('start')}
+            css={textFieldStyle}
+            label="Start Time"
+            type="time"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            field="start"
+          />
+          <TextField
+            id="end-field"
+            value={formValues.end}
+            onChange={updateFormField('end')}
+            css={textFieldStyle}
+            label="End Time"
+            type="time"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            field="end"
+          />
+        </>
+      )}
+      {childCover && (
+        <TextField
+          multiline
+          rows={4}
+          id="notes"
+          value={formValues.notes}
+          onChange={updateFormField('notes')}
+          css={textFieldStyle}
+          label="Notes"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          field="notes"
+        />
+      )}
       <Button
         disabled={!formValues.title}
         type="submit"

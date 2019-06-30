@@ -7,8 +7,8 @@ import {css} from '@emotion/core';
 import {Button, IconButton} from '@material-ui/core';
 
 const propTypes = {
-  id: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
+  id: PropTypes.string,
 };
 
 function DeleteButton({id, closeModal}) {
