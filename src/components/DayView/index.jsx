@@ -45,7 +45,7 @@ export default function DayView() {
     <Modal
       closeWith={closeModal}
       open={isDate}
-      title={getDateStr('DD/MM/YYYY')}>
+      title={getDateStr('DD MMM YYYY')}>
       <Tabs value={childCover} onChange={(_, val) => setChildCover(val)}>
         <Tab label="Event" />
         <Tab label="Child Cover" />

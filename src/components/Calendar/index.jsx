@@ -16,7 +16,7 @@ const defaultProps = {
   events: [],
 };
 
-function Calendar({events, holidays}) {
+function Calendar({holidays, events}) {
   const {setDate} = useContext(DateContext);
   const {setSelectedEvent} = useContext(EventContext);
 
@@ -38,10 +38,12 @@ function Calendar({events, holidays}) {
     let isHoliday = false;
     let backgroundColor;
     const currentDate = moment(date);
+    const isWeekday = currentDate.day() && currentDate.day() < 6;
     holidays.forEach(holiday => {
       if (
         holiday.start.isSameOrBefore(currentDate) &&
-        holiday.end.isAfter(currentDate)
+        holiday.end.isAfter(currentDate) &&
+        isWeekday
       ) {
         isHoliday = true;
         backgroundColor = isCovered(currentDate) ? green : red;
@@ -68,6 +70,7 @@ function Calendar({events, holidays}) {
   function onSelectEvent(selectedEvent) {
     setSelectedEvent(selectedEvent);
   }
+
   return (
     <BigCalendar
       selectable
@@ -77,7 +80,7 @@ function Calendar({events, holidays}) {
       dayPropGetter={highlightHolidays}
       onSelectSlot={onSelectSlot}
       onSelectEvent={onSelectEvent}
-      views={{month: true, week: true}}
+      views={{month: true}}
     />
   );
 }

@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {TextField, Button} from '@material-ui/core';
+import {TimePicker} from '@material-ui/pickers';
 import {Save} from '@material-ui/icons';
 import {form, textFieldStyle, saveStyle} from './style';
+import moment from 'moment';
 
 const propTypes = {
   submitHandler: PropTypes.func.isRequired,
@@ -22,13 +24,12 @@ function EventForm(props) {
   const {submitHandler, childCover, ...formProps} = props;
   const [formValues, setFormValues] = useState(formProps);
 
-  const updateFormField = field => e => {
-    const {value} = e.target;
+  function updateFormField(field, value) {
     setFormValues({
       ...formValues,
       [field]: value,
     });
-  };
+  }
 
   function onSubmit(e) {
     e.stopPropagation();
@@ -42,7 +43,7 @@ function EventForm(props) {
         autoFocus
         id="name-field"
         value={formValues.title}
-        onChange={updateFormField('title')}
+        onChange={({target: {value}}) => updateFormField('title', value)}
         css={textFieldStyle}
         label={childCover ? 'Name' : 'Event Name'}
         InputLabelProps={{
@@ -51,29 +52,15 @@ function EventForm(props) {
       />
       {!childCover && (
         <>
-          <TextField
-            id="start-field"
-            value={formValues.start}
-            onChange={updateFormField('start')}
-            css={textFieldStyle}
+          <TimePicker
+            value={moment().format('YYYY-MM-DDT' + formValues.start)}
+            onChange={date => updateFormField('start', date.format('HH:mm'))}
             label="Start Time"
-            type="time"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            field="start"
           />
-          <TextField
-            id="end-field"
-            value={formValues.end}
-            onChange={updateFormField('end')}
-            css={textFieldStyle}
+          <TimePicker
+            value={moment().format('YYYY-MM-DDT' + formValues.end)}
+            onChange={date => updateFormField('end', date.format('HH:mm'))}
             label="End Time"
-            type="time"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            field="end"
           />
         </>
       )}
@@ -83,7 +70,7 @@ function EventForm(props) {
           rows={4}
           id="notes"
           value={formValues.notes}
-          onChange={updateFormField('notes')}
+          onChange={({target: {value}}) => updateFormField('notes, value')}
           css={textFieldStyle}
           label="Notes"
           InputLabelProps={{

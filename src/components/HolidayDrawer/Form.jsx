@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {TextField, Button} from '@material-ui/core';
+import {Button} from '@material-ui/core';
+import {DatePicker} from '@material-ui/pickers';
 import {useMutation} from 'react-apollo-hooks';
 import {GET_HOLIDAYS, CREATE_HOLIDAY} from 'gql';
 import {css} from '@emotion/core';
@@ -13,12 +14,9 @@ const formStyle = css`
   align-items: center;
 `;
 
-const textFieldStyle = css`
-  margin: 10px;
-`;
-
 export default function Form() {
-  const [formValues, setFormValues] = useState({});
+  const [startDate, setStartDate] = useState(moment());
+  const [endDate, setEndDate] = useState(moment().add(1, 'day'));
 
   const createHoliday = useMutation(CREATE_HOLIDAY, {
     update(cache, {data: {createHoliday}}) {
@@ -34,24 +32,11 @@ export default function Form() {
     },
   });
 
-  const updateFormField = field => e => {
-    const {value} = e.target;
-    setFormValues({
-      ...formValues,
-      [field]: value,
-    });
-  };
-  function onKeyDown(e) {
-    if (e.which === 13) {
-      onSubmit(e);
-    }
-  }
-
   function onSubmit(e) {
     e.stopPropagation();
     e.preventDefault();
-    const start = moment(formValues.start).format(`YYYY-MM-DDT00:00:00`);
-    const end = moment(formValues.end).format(`YYYY-MM-DDT00:00:00`);
+    const start = startDate.format(`YYYY-MM-DDT00:00:00`);
+    const end = endDate.format(`YYYY-MM-DDT00:00:00`);
     createHoliday({
       variables: {
         start,
@@ -61,29 +46,19 @@ export default function Form() {
   }
 
   return (
-    <form onKeyDown={onKeyDown} onSubmit={onSubmit} css={formStyle}>
+    <form onSubmit={onSubmit} css={formStyle}>
       <div>
-        <TextField
-          css={textFieldStyle}
-          id="start-date"
-          onChange={updateFormField('start')}
-          label="Start Date (inc)"
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          field="start"
+        <DatePicker
+          value={startDate}
+          onChange={date => setStartDate(date)}
+          format="DD MMM YYYY"
+          label="Start"
         />
-        <TextField
-          css={textFieldStyle}
-          id="end-date"
-          onChange={updateFormField('end')}
-          label="End Date"
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          field="end"
+        <DatePicker
+          value={endDate}
+          onChange={date => setEndDate(date)}
+          format="DD MMM YYYY"
+          label="End"
         />
       </div>
       <Button type="submit" css={{alignSelf: 'flex-end'}} color="primary">

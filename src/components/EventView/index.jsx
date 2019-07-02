@@ -9,7 +9,8 @@ import moment from 'moment';
 
 export default function EventView() {
   const {selectedEvent, setSelectedEvent} = useContext(EventContext);
-  const title = selectedEvent && selectedEvent.title;
+  const title = selectedEvent?.title;
+  const subtitle = selectedEvent?.start.format('DD MMM YYYY');
 
   const formProps = {
     ...selectedEvent,
@@ -41,7 +42,7 @@ export default function EventView() {
   }
 
   return (
-    <Modal closeWith={closeModal} open={!!selectedEvent} title={title}>
+    <Modal closeWith={closeModal} open={!!selectedEvent} {...{title, subtitle}}>
       <EventForm
         {...{
           ...formProps,

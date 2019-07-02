@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_EVENTS = gql`
-  {
-    events: listEvents {
+  query ListEvents($start: String, $end: String) {
+    events: listEvents(start: $start, end: $end) {
       id
       title
       childCover
