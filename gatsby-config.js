@@ -10,7 +10,7 @@ module.exports = {
     app.use(
       '/graphql',
       proxy({
-        target: 'http://localhost:9001',
+        target: 'http://localhost:9000',
       }),
     );
   },
