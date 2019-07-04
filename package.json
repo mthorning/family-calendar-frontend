@@ -2,7 +2,7 @@
   "name": "family-calendar-fronten",
   "private": true,
   "description": "Backend for the Family Calendar application",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "@thorning_m",
   "dependencies": {
     "@date-io/moment": "^1.3.8",
