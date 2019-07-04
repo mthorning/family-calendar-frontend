@@ -40,7 +40,6 @@ function EventForm(props) {
   return (
     <form onSubmit={onSubmit} css={form}>
       <TextField
-        autoFocus
         id="name-field"
         value={formValues.title}
         onChange={({target: {value}}) => updateFormField('title', value)}
