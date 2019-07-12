@@ -69,7 +69,7 @@ function EventForm(props) {
           rows={4}
           id="notes"
           value={formValues.notes}
-          onChange={({target: {value}}) => updateFormField('notes, value')}
+          onChange={({target: {value}}) => updateFormField('notes', value)}
           css={textFieldStyle}
           label="Notes"
           InputLabelProps={{
